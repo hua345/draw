@@ -1,11 +1,14 @@
 <template>
   <el-row type="flex" justify="center">
     <el-col :xs="24" :sm="18" :md="12" :lg="8">
-      <el-table :data="drawResult" v-if="hasResult" stripe style="width: 100%">
-        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-        <el-table-column label="人员类型" width="180">
+      <el-table :data="drawResultBody" v-if="hasResult" stripe style="width: 100%">
+        <el-table-column
+          v-for="(val,index) in drawResultHeader"
+          :key="index"
+          :label="val"
+        >
           <template slot-scope="scope">
-            <el-tag type="success">{{scope.row.type}}</el-tag>
+            {{scope.row[index]}}
           </template>
         </el-table-column>
       </el-table>
@@ -26,6 +29,8 @@ export default {
   data: () => ({
     hasResult: false,
     drawResult: null,
+    drawResultHeader: null,
+    drawResultBody: null,
     selectedCompanyName: null
   }),
   mounted: function() {
@@ -40,6 +45,57 @@ export default {
         undefined != this.drawResult &&
         this.drawResult.length >= 1
       ) {
+        var userTypeMap = new Map();
+        this.drawResult.forEach(item => {
+          let userList = userTypeMap.get(item.type);
+          if (undefined != userList) {
+            userList.push(item);
+            userTypeMap.set(item.type, userList);
+          } else {
+            userTypeMap.set(item.type, [item]);
+          }
+        });
+        var drawResultHeader = [];
+        var drawResultBody = [];
+        //获取数据类型列表
+        userTypeMap.forEach(function(valueUserList, keyUserType) {
+          drawResultHeader.push(keyUserType);
+        });
+        //取长度最长的数据类型
+        var maxTypeName = "";
+        drawResultHeader.forEach(function(valueType, index) {
+          if (index == 0) {
+            maxTypeName = valueType;
+          } else {
+            var userList = userTypeMap.get(valueType);
+            var originUserList = userTypeMap.get(maxTypeName);
+            if (userList.length > originUserList.length) {
+              maxTypeName = valueType;
+            }
+          }
+        });
+        //获取表数据
+        console.log("userTypeMap", userTypeMap)
+        console.log("maxTypeName", maxTypeName)
+        console.log("drawResultHeader",drawResultHeader)
+        userTypeMap.get(maxTypeName).forEach(function(val, index) {
+          var dataRow = [];
+          drawResultHeader.forEach(function(valueType, typeIndex) {
+            var currentList = userTypeMap.get(valueType);
+            if (currentList.length >= index + 1) {
+              console.log("currentList[index]",currentList, index, currentList[index])
+              dataRow.push(currentList[index].name);
+            } else {
+              dataRow.push("");
+            }
+          });
+          console.log(dataRow)
+          drawResultBody.push(dataRow);
+        });
+        this.drawResultHeader = drawResultHeader;
+        this.drawResultBody = drawResultBody;
+        console.log(this.drawResultHeader);
+        console.log(this.drawResultBody);
         this.hasResult = true;
       }
     },

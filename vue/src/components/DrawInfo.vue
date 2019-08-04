@@ -5,12 +5,13 @@
       v-model="value"
       @change="companyChange"
       placeholder="请选择"
+      center="true"
     >
       <el-option v-for="item in companyList" :key="item" :label="item" :value="item"></el-option>
     </el-select>
     <el-row>
       <el-col :span="24">
-        <el-table :data="selectedTypeInfoList" stripe style="width: 100%">
+        <el-table :data="selectedTypeInfoList" stripe style="width: 100%" center="true">
           <el-table-column label="人员类型" width="180">
             <template slot-scope="scope">
               <el-tag type="success">{{scope.row.type}}</el-tag>
@@ -33,7 +34,7 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-button round @click="goLottery">去抽奖</el-button>
+        <el-button round @click="goLottery">去抽签</el-button>
       </el-col>
     </el-row>
   </div>
@@ -117,21 +118,24 @@ export default {
           return infoValue.lotteryNum >= 1;
         });
         if (lotteryFlag) {
-          this.$message({
-            message: "去抽奖",
-            type: "success"
+          this.$notify({
+            title: "抽签设置",
+            message: "去抽签",
+            position: "top-left"
           });
           this.$router.push({ path: "/" });
         } else {
-          this.$message({
+          this.$notify({
+            title: "抽签设置",
             message: "抽奖人数不能都为零",
-            type: "warning"
+            position: "top-left"
           });
         }
       } else {
-        this.$message({
+        this.$notify({
+          title: "抽签设置",
           message: "需要先选择单位哦",
-          type: "warning"
+          position: "top-left"
         });
       }
     }

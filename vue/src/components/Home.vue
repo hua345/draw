@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="24">
-        <el-button round @click="beginLottery">开始抽签</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="24">
-        <el-table :data="drawResult" v-if="null != drawResult" stripe style="width: 100%">
-          <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-          <el-table-column label="人员类型" width="180">
-            <template slot-scope="scope">
-              <el-tag type="success">{{scope.row.type}}</el-tag>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-col>
-    </el-row>
-  </div>
+  <el-row type="flex" justify="center">
+    <el-col :xs="24" :sm="18" :md="12" :lg="8">
+      <el-row type="flex" justify="center">
+        <el-col :xs="24" :sm="18" :md="12" :lg="8">
+          <el-button round @click="beginLottery" class="beginDraw">开始抽签</el-button>
+        </el-col>
+      </el-row>
+
+      <el-table :data="drawResult" v-if="null != drawResult" stripe style="width: 100%">
+        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+        <el-table-column label="人员类型" width="180">
+          <template slot-scope="scope">
+            <el-tag type="success">{{scope.row.type}}</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -37,6 +36,18 @@ export default {
   methods: {
     getCompanyList: function() {
       if (null != this.$store.state.excelData) {
+        if (
+          null == this.$store.state.selectedCompanyName ||
+          null == this.$store.state.selectedTypeInfoList
+        ) {
+          this.$notify({
+            title: "抽签设置",
+            message: "请先进行抽签设置",
+            position: "top-left"
+          });
+          this.$router.push({ path: "/data" });
+          return;
+        }
         var excelData = this.$store.state.excelData;
         this.isInit = true;
         this.selectedTypeInfoList = this.$store.state.selectedTypeInfoList;
@@ -64,8 +75,13 @@ export default {
           }
         });
         this.userTypeMap = userTypeMap;
-        console.log(this.userTypeMap);
       } else {
+        this.$notify({
+          title: "抽签设置",
+          message: "请先导入数据",
+          position: "top-left",
+          type: 'warning'
+        });
         this.$router.push({ path: "/data" });
       }
     },
@@ -78,9 +94,7 @@ export default {
             if (0 == drawUserList.length) {
               break;
             }
-            let randowmNum = Math.floor(
-              Math.random() * drawUserList.length
-            );
+            let randowmNum = Math.floor(Math.random() * drawUserList.length);
             let deleteElem = drawUserList.splice(randowmNum, 1);
             result.push(deleteElem[0]);
           }
@@ -95,4 +109,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.beginDraw {
+  margin: 30px auto;
+}
 </style>

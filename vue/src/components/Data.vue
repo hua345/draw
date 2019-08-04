@@ -1,6 +1,6 @@
 <template>
-  <el-row>
-    <el-col :span="24">
+  <el-row type="flex" justify="center">
+    <el-col :xs="24" :sm="18" :md="12" :lg="8">
       <el-tabs v-model="activeName">
         <el-tab-pane label="上传文件" name="upload">
           <el-upload
@@ -17,7 +17,7 @@
               将文件拖到此处，或
               <em>点击上传</em>
             </div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div class="el-upload__tip" slot="tip">只能上传xlsx/xls文件，且不超过8M</div>
           </el-upload>
         </el-tab-pane>
         <el-tab-pane label="抽签设置" name="drawInfo">
@@ -64,8 +64,10 @@ export default {
       this.$store.commit("SET_EXCEL_DATA", response.data);
       this.isUpload = true;
       this.$store.commit("SET_IsUpload", true);
-      this.$message({
+      this.$notify({
+        title: "抽签设置",
         message: "上传文件成功",
+        position: "top-left",
         type: "success"
       });
       this.activeName = "drawInfo";
@@ -79,4 +81,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/* .upload-demo {
+  padding: 20px 0px;
+  margin: 0 auto;
+  width: 300px;
+} */
 </style>
