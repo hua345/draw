@@ -2,7 +2,7 @@
   <div>
     <el-select
       v-if="isInit && null != companyList"
-      v-model="value"
+      v-model="selectedValue"
       @change="companyChange"
       placeholder="请选择"
       center="true"
@@ -32,9 +32,9 @@
         </el-table>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="24">
-        <el-button round @click="goLottery">去抽签</el-button>
+    <el-row type="flex" justify="center">
+      <el-col :xs="24" :sm="18" :md="12" :lg="8">
+        <el-button round @click="goLottery" class="goDraw">去抽签</el-button>
       </el-col>
     </el-row>
   </div>
@@ -47,7 +47,7 @@ export default {
     return {
       isInit: false,
       showSub: false,
-      value: "",
+      selectedValue: "",
       num: 1,
       companyList: null,
       selectedTypeInfoList: null,
@@ -65,8 +65,10 @@ export default {
         this.companyList = this.$store.state.excelData.map(item => {
           return item.companyName;
         });
-        console.log(this.companyList);
       }
+      this.selectedTypeInfoList = this.$store.state.selectedTypeInfoList;
+      this.selectedCompanyName = this.$store.state.selectedCompanyName;
+      this.selectedValue = this.selectedCompanyName;
     },
     companyChange: function(selectedCompanyName) {
       if (
@@ -145,4 +147,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.goDraw {
+  margin: 30px auto;
+}
 </style>

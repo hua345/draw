@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import DrawInfo from '@/components/DrawInfo'
-import Home from '@/components/Home'
+import HomeV2 from '@/components/HomeV2'
 import Data from '@/components/Data'
 import ResultV2 from '@/components/ResultV2'
 Vue.use(Router)
@@ -17,11 +17,11 @@ export default new Router({
         },
         {
             path: '/',
-            component: Home
+            component: HomeV2
         },
         {
             path: '/index',
-            component: Home
+            component: HomeV2
         },
         {
             path: '/result',
