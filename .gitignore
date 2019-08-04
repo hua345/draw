@@ -2,3 +2,5 @@
 .idea/
 **.log
 **/upload/
+**/dist/
+**/node_modules/
