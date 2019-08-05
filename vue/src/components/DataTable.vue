@@ -22,14 +22,19 @@ export default {
   methods: {
     getDrawResult: function() {
       this.drawResult = this.$store.state.drawResult;
-      this.selectedCompanyName = this.$store.state.selectedCompanyName;
+      var drawResultTable = this.formatData(this.drawResult);
+      this.drawResultHeader = drawResultTable.drawResultHeader;
+      this.drawResultBody = drawResultTable.drawResultBody;
+      this.hasResult = true;
+    },
+    formatData: function(drawResult) {
       if (
-        null != this.drawResult &&
-        undefined != this.drawResult &&
-        this.drawResult.length >= 1
+        null != drawResult &&
+        undefined != drawResult &&
+        drawResult.length >= 1
       ) {
         var userTypeMap = new Map();
-        this.drawResult.forEach(item => {
+        drawResult.forEach(item => {
           let userList = userTypeMap.get(item.type);
           if (undefined != userList) {
             userList.push(item);
@@ -70,9 +75,10 @@ export default {
           });
           drawResultBody.push(dataRow);
         });
-        this.drawResultHeader = drawResultHeader;
-        this.drawResultBody = drawResultBody;
-        this.hasResult = true;
+        return {
+          drawResultHeader: drawResultHeader,
+          drawResultBody: drawResultBody
+        };
       }
     }
   }

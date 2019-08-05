@@ -42,8 +42,9 @@ func ParseExcelV2(excelPath string) []model.Company {
 				typeValue := typeRow[colIndex]
 				if len(colCell) != 0 && len(typeValue) != 0 {
 					user := model.User{
-						Name: colCell,
-						Type: typeValue,
+						Name:      colCell,
+						Type:      typeValue,
+						TypeIndex: colIndex,
 					}
 					company.UserList = append(company.UserList, user)
 				}
@@ -56,7 +57,6 @@ func ParseExcelV2(excelPath string) []model.Company {
 func CreateExcelV2(drawResult *model.DrawResult) {
 	excelFile := excelize.NewFile()
 	// Create a new sheet.
-
 	excelFile.SetSheetName(excelFile.GetSheetName(1), drawResult.CompanyName)
 	err := excelFile.SetCellValue(drawResult.CompanyName, "A1", drawResult.CompanyName)
 	if err != nil {
@@ -86,8 +86,11 @@ func CreateExcelV2(drawResult *model.DrawResult) {
 	}
 	for userType, userList := range userTypeMap {
 		fmt.Println(userType, userList)
-		axisName, err := excelize.ColumnNumberToName(axisIndex)
-		axisIndex++
+		if len(userList) == 0 {
+			continue
+		}
+		originIndex := userList[0].TypeIndex + 1
+		axisName, err := excelize.ColumnNumberToName(originIndex)
 		if err != nil {
 			panic(err)
 		}

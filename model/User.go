@@ -1,6 +1,7 @@
 package model
 
 type User struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
+	Name      string `json:"name"`
+	Type      string `json:"type"`
+	TypeIndex int    `json:"typeIndex"`
 }
