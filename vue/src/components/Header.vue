@@ -1,31 +1,52 @@
 <template>
-  <el-row type="flex" justify="center">
-    <el-col :xs="24" :sm="18" :md="12" :lg="8">
-      <el-menu
-        :default-active="this.$route.path"
-        router
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-      >
-        <el-menu-item index="/data">数据中心</el-menu-item>
-        <el-menu-item index="/">抽签中心</el-menu-item>
-        <el-menu-item index="/result">抽签结果</el-menu-item>
-      </el-menu>
+  <el-row>
+    <el-col :span="24">
+      <el-row type="flex" justify="center" style="text-align: center;">
+        <el-col>
+          <h3>{{drawName}}</h3>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col>
+          <el-menu :default-active="this.$route.path" router class="el-menu-demo" mode="horizontal">
+            <el-menu-item index="/">抽签中心</el-menu-item>
+            <el-menu-item index="/result">抽签结果</el-menu-item>
+          </el-menu>
+        </el-col>
+      </el-row>
     </el-col>
   </el-row>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Header",
   data() {
     return {
-      activeIndex: "/"
+      activeIndex: "/",
+      drawName: ""
     };
   },
+  mounted: function() {
+    this.getDrawName();
+  },
   methods: {
-    handleSelect(key, keyPath) {}
+    getDrawName() {
+      axios
+        .get(process.env.VUE_APP_BASE_URL + "/api/v2/drawName")
+        .then(response => {
+          if (undefined != response.data) {
+            this.drawName = response.data.data;
+            document.title = this.drawName;
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+          document.title = "抽签中心";
+        });
+    }
   }
 };
 </script>

@@ -20,7 +20,6 @@
 export default {
   name: "HomeV2",
   data: () => ({
-    show3: true,
     isInit: false,
     drawResult: null,
     userTypeMap: null,
@@ -45,7 +44,7 @@ export default {
             message: "请先进行抽签设置",
             position: "top-left"
           });
-          this.$router.push({ path: "/data" });
+          this.$router.push({ path: "/" });
           return;
         }
         var excelData = this.$store.state.excelData;
@@ -82,7 +81,7 @@ export default {
           position: "top-left",
           type: "warning"
         });
-        this.$router.push({ path: "/data" });
+        this.$router.push({ path: "/" });
       }
     },
     beginLottery: function() {

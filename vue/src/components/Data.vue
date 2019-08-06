@@ -1,6 +1,6 @@
 <template>
-  <el-row type="flex" justify="center">
-    <el-col :xs="24" :sm="18" :md="12" :lg="8">
+  <el-row>
+    <el-col  :span="24">
       <el-tabs v-model="activeName">
         <el-tab-pane label="上传文件" name="upload">
           <el-upload

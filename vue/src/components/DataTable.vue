@@ -22,10 +22,12 @@ export default {
   methods: {
     getDrawResult: function() {
       this.drawResult = this.$store.state.drawResult;
-      var drawResultTable = this.formatData(this.drawResult);
-      this.drawResultHeader = drawResultTable.drawResultHeader;
-      this.drawResultBody = drawResultTable.drawResultBody;
-      this.hasResult = true;
+      if (null != this.drawResult && undefined != this.drawResult) {
+        var drawResultTable = this.formatData(this.drawResult);
+        this.drawResultHeader = drawResultTable.drawResultHeader;
+        this.drawResultBody = drawResultTable.drawResultBody;
+        this.hasResult = true;
+      }
     },
     formatData: function(drawResult) {
       if (

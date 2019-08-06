@@ -1,6 +1,6 @@
 <template>
-  <el-row type="flex" justify="center">
-    <el-col :xs="24" :sm="18" :md="12" :lg="8">
+  <el-row>
+    <el-col :span="24">
       <DataTable></DataTable>
       <el-row type="flex" justify="center">
         <el-col :xs="24" :sm="18" :md="12" :lg="8">
@@ -54,6 +54,7 @@ export default {
           message: "导出的数据为空,请先进行抽签",
           position: "top-left"
         });
+        this.$router.push({ path: "/" });
         return;
       }
       axios({
@@ -86,7 +87,7 @@ export default {
           navigator.msSaveBlob(blob, fileName);
         }
 
-        this.$router.push({ path: "/data" });
+        this.$router.push({ path: "/" });
       });
     }
   }

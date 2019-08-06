@@ -15,6 +15,7 @@ func InitRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 	router.Use(Cors())
 	router.StaticFS("/dist", http.Dir("dist"))
+	router.StaticFS("/public", http.Dir("public"))
 	router.StaticFS("/fonts", http.Dir("fonts"))
 	router.GET("/ping", api.Ping)
 	router.StaticFile("/", "dist/index.html")
@@ -29,5 +30,6 @@ func InitRouter() *gin.Engine {
 	// router.MaxMultipartMemory = 8 << 20  // 8 MiB
 	apiV2.POST("/upload", v2.UploadExcel)
 	apiV2.POST("/toExcel", v2.ToExcel)
+	apiV2.GET("/drawName", v2.GetDrawName)
 	return router
 }

@@ -34,7 +34,7 @@
     </el-row>
     <el-row type="flex" justify="center">
       <el-col :xs="24" :sm="18" :md="12" :lg="8">
-        <el-button round @click="goLottery" class="goDraw">去抽签</el-button>
+        <el-button round @click="goLottery" class="goDraw">开始抽签</el-button>
       </el-col>
     </el-row>
   </div>
@@ -51,7 +51,9 @@ export default {
       num: 1,
       companyList: null,
       selectedTypeInfoList: null,
-      selectedCompanyName: null
+      selectedCompanyName: null,
+      drawResult: null,
+      userTypeMap: null
     };
   },
   mounted: function() {
@@ -106,6 +108,45 @@ export default {
         this.showSub = true;
       }
     },
+    beginLottery() {
+      var selectedCompany = this.$store.state.excelData.filter(item => {
+        return item.companyName == this.selectedCompanyName;
+      });
+      selectedCompany = selectedCompany[0];
+      var userTypeMap = new Map();
+      selectedCompany.userList.forEach(item => {
+        let userTypeInfo = userTypeMap.get(item.type);
+        if (undefined != userTypeInfo && undefined != userTypeInfo.userList) {
+          userTypeInfo.userList.push(item);
+          userTypeMap.set(item.type, userTypeInfo);
+        } else {
+          userTypeMap.set(item.type, { userList: [item], lotteryNum: 0 });
+        }
+      });
+      this.selectedTypeInfoList.forEach(item => {
+        let userTypeInfo = userTypeMap.get(item.type);
+        if (undefined != userTypeInfo) {
+          userTypeInfo.lotteryNum = item.lotteryNum;
+        }
+      });
+      this.userTypeMap = userTypeMap;
+      var result = [];
+      this.userTypeMap.forEach(function(userTypeInfo, userType, map) {
+        if (userTypeInfo.lotteryNum >= 1) {
+          var drawUserList = [...userTypeInfo.userList];
+          for (var i = 0; i < userTypeInfo.lotteryNum; i++) {
+            if (0 == drawUserList.length) {
+              break;
+            }
+            let randowmNum = Math.floor(Math.random() * drawUserList.length);
+            let deleteElem = drawUserList.splice(randowmNum, 1);
+            result.push(deleteElem[0]);
+          }
+        }
+      });
+      this.drawResult = result;
+      this.$store.commit("SET_DrawResult", result);
+    },
     goLottery() {
       if (
         null != this.selectedCompanyName &&
@@ -120,12 +161,8 @@ export default {
           return infoValue.lotteryNum >= 1;
         });
         if (lotteryFlag) {
-          this.$notify({
-            title: "抽签设置",
-            message: "去抽签",
-            position: "top-left"
-          });
-          this.$router.push({ path: "/" });
+          this.beginLottery();
+          this.$router.push({ path: "/result" });
         } else {
           this.$notify({
             title: "抽签设置",
