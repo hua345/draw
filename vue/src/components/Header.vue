@@ -3,7 +3,7 @@
     <el-col :span="24">
       <el-row type="flex" justify="center" style="text-align: center;">
         <el-col>
-          <h3>{{drawName}}</h3>
+          <h2 class="my-title">{{drawName}}</h2>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
@@ -53,4 +53,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.my-title{
+  text-shadow: 5px 5px 5px #ca9393;
+}
 </style>

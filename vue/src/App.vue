@@ -12,7 +12,7 @@
         <!-- <el-col :md="6" :lg="8">
           <img :src="imgList[0]" style="width: 100%;" />
         </el-col> -->
-        <el-col :md="12" :lg="8" style="background-color:#FFF">
+        <el-col :md="12" :lg="8" class="my-router">
           <router-view></router-view>
         </el-col>
         <!-- <el-col :md="6" :lg="8">
@@ -41,7 +41,12 @@ export default {
     Header
   },
   mounted() {
-  document.querySelector('body').setAttribute('style', "background-repeat: no-repeat;background-size: 100% auto;background-image: url(" + process.env.VUE_APP_BASE_URL + "/public/img/img01.jpg" + ")")
+  document.querySelector('html').setAttribute('style', `height:100%;
+  background-position: center 0;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-image: url(${process.env.VUE_APP_BASE_URL}/public/img/imgH01.jpg)`
+  )
 },
   data: function() {
     return {
@@ -76,8 +81,12 @@ export default {
 </script>
 
 <style>
+.my-router{
+  background-color: rgba(255, 255, 255, 0.6);
+  min-height: 400px;
+}
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
