@@ -1,9 +1,9 @@
 package v2
 
 import (
-	"ginExample/model"
-	"ginExample/pkg/file"
-	"ginExample/pkg/logger"
+	"drawCenter/internal/drawCenter/model"
+	"drawCenter/pkg/file"
+	"drawCenter/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"

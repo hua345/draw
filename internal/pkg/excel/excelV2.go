@@ -1,13 +1,14 @@
 package excel
 
 import (
+	"drawCenter/internal/drawCenter/model"
 	"fmt"
-	"ginExample/model"
 	"github.com/360EntSecGroup-Skylar/excelize"
+	"path"
 	"strconv"
 )
 
-var DrawResultExcelV2 = "./upload/drawResultV2.xlsx"
+var DrawResultExcelV2 = "drawResultV2.xlsx"
 
 func ParseExcelV2(excelPath string) []model.Company {
 	excelFile, err := excelize.OpenFile(excelPath)
@@ -54,7 +55,7 @@ func ParseExcelV2(excelPath string) []model.Company {
 	}
 	return companyList
 }
-func CreateExcelV2(drawResult *model.DrawResult) {
+func CreateExcelV2(drawResult *model.DrawResult, savePath string) {
 	excelFile := excelize.NewFile()
 	// Create a new sheet.
 	excelFile.SetSheetName(excelFile.GetSheetName(1), drawResult.CompanyName)
@@ -110,7 +111,7 @@ func CreateExcelV2(drawResult *model.DrawResult) {
 		}
 	}
 	// Save xlsx file by the given path.
-	err = excelFile.SaveAs(DrawResultExcelV2)
+	err = excelFile.SaveAs(path.Join(savePath, DrawResultExcelV2))
 	if err != nil {
 		panic(err)
 	}

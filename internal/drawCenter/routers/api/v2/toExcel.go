@@ -1,10 +1,12 @@
 package v2
 
 import (
-	"ginExample/model"
-	"ginExample/pkg/excel"
-	"ginExample/pkg/logger"
+	"drawCenter/internal/drawCenter/model"
+	"drawCenter/internal/pkg/excel"
+	"drawCenter/pkg/file"
+	"drawCenter/pkg/logger"
 	"github.com/gin-gonic/gin"
+	"path"
 )
 
 func ToExcel(context *gin.Context) {
@@ -15,12 +17,20 @@ func ToExcel(context *gin.Context) {
 		context.JSON(200, gin.H{"errcode": 400, "description": "Post Data Err"})
 		return
 	} else {
-		excel.CreateExcelV2(&drawResult)
+		//检查目录
+		uploadPathExist, err := file.PathExists(uploadPath)
+		if err != nil {
+			panic(err)
+		}
+		if !uploadPathExist {
+			file.PathMkDir(uploadPath)
+		}
+		excel.CreateExcelV2(&drawResult, uploadPath)
 
 		context.Header("content-disposition", `attachment; filename=`+"drawResult.xlsx")
 		context.Writer.Header().Add("Content-Type", "application/octet-stream")
 		context.Header("Content-Transfer-Encoding", "binary")
-		context.File(excel.DrawResultExcelV2)
+		context.File(path.Join(uploadPath, excel.DrawResultExcelV2))
 		//context.Header("Content-Type", "application/octet-stream")
 		//context.Header("Content-Disposition", "attachment; filename="+"drawResult.xlsx")
 		//context.Header("Content-Transfer-Encoding", "binary")

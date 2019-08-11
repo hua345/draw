@@ -1,14 +1,14 @@
 package excel
 
 import (
-	"ginExample/model"
+	"drawCenter/internal/drawCenter/model"
 	"testing"
 )
 
-func TestParseExcel(t *testing.T){
-	t.Log(ParseExcel("./test.xlsx"))
+func TestParseExcelV2(t *testing.T) {
+	t.Log(ParseExcelV2("./testData.xlsx"))
 }
-func TestCreateExcel(t *testing.T) {
+func TestCreateExcelV2(t *testing.T) {
 	drawResult := &model.DrawResult{}
 	drawResult.CompanyName = "A公司"
 	drawResult.UserList = append(drawResult.UserList, model.User{Name: "A经理1", Type: "项目经理"})
@@ -18,5 +18,5 @@ func TestCreateExcel(t *testing.T) {
 	drawResult.UserList = append(drawResult.UserList, model.User{Name: "A后端3", Type: "后端"})
 	drawResult.UserList = append(drawResult.UserList, model.User{Name: "A后端5", Type: "后端"})
 
-	CreateExcel(drawResult)
+	CreateExcelV2(drawResult, "upload")
 }

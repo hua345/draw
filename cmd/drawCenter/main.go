@@ -1,8 +1,8 @@
 package main
 
 import (
-	"ginExample/pkg/logger"
-	"ginExample/routers"
+	"drawCenter/internal/drawCenter/routers"
+	"drawCenter/pkg/logger"
 	"github.com/pkg/browser"
 )
 
